@@ -1,0 +1,44 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixins.scss";
+
+.card {
+  width: 100%;
+  border: 1px solid $secondaryColor;
+  border-radius: 5px;
+  padding: 14px;
+  margin: 14px;
+  @include flexbox(flex, space-around);
+
+  // .card__img
+  &__img {
+    width: 50%;
+    border: 1px solid black;
+
+    // img:hover
+    img {
+      width: 100%;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  &__title {
+    max-width: 120px;
+  }
+}
+
+// Tablet
+@media (min-width: 451px) and (max-width: 850px) {
+  .card {
+    width: 35%;
+  }
+}
+
+// Desktop
+@media (min-width: 851px) {
+  .card {
+    width: 27%;
+  }
+}
