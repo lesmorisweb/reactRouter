@@ -1,41 +1,31 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Context } from "../context";
-import { RAMDetail } from "../components/RAMDetail";
-import { getOneCharacter } from "../services/rickAndMortyAPI";
 
-const RAMDetails = () => {
+function RAMDetails() {
   const [character, setCharacter] = useState({});
   const { id: idParam } = useParams();
+
   const context = useContext(Context);
   const { rickAndMorty } = context || {};
   const { characters } = rickAndMorty || [];
-  const { id, species, name, status, image, gender } = character || {};
 
   useEffect(() => {
-    const item = characters.find((item) => item.id === +idParam);
-    if (item) {
-      setCharacter(item);
-    } else {
-      getData(idParam);
-    }
+    const item = characters.find((item) => item.id === parseInt(idParam));
+    setCharacter(item);
   }, []);
 
-  const getData = async (id) => {
-    const data = await getOneCharacter(id);
-    setCharacter(data);
-  };
-
   return (
-    <RAMDetail
-      id={id}
-      species={species}
-      name={name}
-      status={status}
-      image={image}
-      gender={gender}
-    />
+    <div>
+      RAMDeatails: {idParam}
+      <strong>ID:</strong> {character.id}
+      <strong>Species:</strong> {character.species}
+      <strong>Gender:</strong> {character.gender}
+      <strong>Name:</strong> {character.name}
+      <strong>Status:</strong> {character.status}
+      <img src={character.image} alt={character.name} />
+    </div>
   );
-};
+}
 
 export default RAMDetails;

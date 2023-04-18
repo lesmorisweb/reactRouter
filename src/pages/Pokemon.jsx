@@ -1,48 +1,52 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useContext, useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { CardList } from "../components/CardList";
+import { Context } from "../context";
 
-const Pokemon = () => {
+function Pokemon() {
   const [characters, setCharacters] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const context = useContext(Context);
 
   const getOnePokemon = async (url) => {
     const response = await fetch(url);
     const data = await response.json();
-    return data.sprites.front_shiny;
+    return {
+      image: data.sprites.front_shiny,
+      [data.stats[0].stat.name]: data.stats[0].base_stat,
+      [data.stats[1].stat.name]: data.stats[1].base_stat,
+      [data.stats[2].stat.name]: data.stats[2].base_stat,
+      [data.stats[5].stat.name]: data.stats[5].base_stat,
+    };
   };
 
-  //Async / await
   const getAllPokemons = async () => {
     const pokemons = [];
     const url = "https://pokeapi.co/api/v2/pokemon";
     const response = await fetch(url);
     const data = await response.json();
+    console.log(("data", data));
 
-    // For común
-    /*for (let i = 0; i < data.results.length; i++) {
+    for (let i = 0; i < data.results.length; i++) {
       const item = data.results[i];
-      const image = await getOnePokemon(item.url);
-      pokemons.push({ name: item.name, image: image });
-    }*/
-
-    // For in = (index)
-    /*for (let index in data.results) {
-      console.log("For in get index", index);
-      const item = data.results[index];
-      const image = await getOnePokemon(item.url);
-      pokemons.push({ name: item.name, image: image });
-    }*/
-
-    // For of (value)
-    for (let item of data.results) {
-      console.log("For of get value of each item", item);
-      const image = await getOnePokemon(item.url);
-      pokemons.push({ name: item.name, image: image });
+      const { image, hp, attack, defense, speed } = await getOnePokemon(
+        item.url
+      );
+      pokemons.push({
+        name: item.name,
+        image: image,
+        id: item.name,
+        hp,
+        attack,
+        speed,
+        defense,
+      });
     }
-    setLoader(false);
+
+    console.log("Pokemons", pokemons);
+    context.pokemon.characters = pokemons;
+    context.redirectDetailsRoute = "/pokemon";
+
     setCharacters(pokemons);
   };
 
@@ -55,11 +59,11 @@ const Pokemon = () => {
   return (
     <>
       <Header>Header</Header>
-      {loader && <div>Loading....</div>}
       {characters.length >= 1 && renderPokemons()}
+
       <Footer>Footer</Footer>
     </>
   );
-};
+}
 
 export default Pokemon;
