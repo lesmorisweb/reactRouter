@@ -1,0 +1,44 @@
+.pokemon__card {
+  width: 30%;
+  margin: 5% auto;
+  border-radius: 1em;
+  background-color: rgb(70, 119, 78);
+  padding: 0.5em 0.8em;
+  box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.3);
+
+  .pokemon__info {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(143, 164, 233);
+    padding: 0.4em 0.8em;
+    border-radius: 1em;
+    box-shadow: inset 0 0 5px 1px rgb(70, 55, 122);
+
+    h3 {
+      align-self: flex-end;
+      text-transform: uppercase;
+    }
+
+    ul {
+      align-self: center;
+      width: 80%;
+    }
+
+    li {
+      text-align: left;
+      list-style-type: none;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 2em;
+      border-bottom: 2px solid rgba(47, 202, 137, 0.363);
+    }
+
+    .Stat__name {
+      font-weight: 600;
+    }
+  }
+
+  h2 {
+    text-transform: uppercase;
+  }
+}
