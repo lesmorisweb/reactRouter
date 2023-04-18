@@ -1,30 +1,39 @@
-import React, { useEffect, useContext } from "react";
-
+import React, { useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { Loader } from "../components/Loader";
+
 import { CardList } from "../components/CardList";
-import { Context } from "../context";
-import { useCharacters, useData } from "../hooks";
-import { getAllCharacters } from "../services/rickAndMortyAPI";
 
-const RickAndMorty = () => {
-  //const { characters } = useCharacters("ram");
-  const { data: characters } = useData([], getAllCharacters);
-  const context = useContext(Context);
+function RickAndMorty() {
+  const [characters, setCharacters] = useState([]);
+  const [loader, setLoader] = useState(true);
 
-  // Rendered
+  const getAllCharacters = () => {
+    const url = "https://rickandmortyapi.com/api/character";
+    fetch(url)
+      .then((request) => request.json())
+      .then((data) => {
+        setCharacters(data.results);
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+    setLoader(false);
+  };
+
   useEffect(() => {
-    context.rickAndMorty.characters = characters;
-    context.redirectDetailsRoute = "/rickandmorty";
+    getAllCharacters();
   }, []);
 
   return (
     <>
       <Header>Header</Header>
+      {loader && <Loader />}
       <CardList list={characters} />
       <Footer>Footer</Footer>
     </>
   );
-};
+}
 
 export default RickAndMorty;
